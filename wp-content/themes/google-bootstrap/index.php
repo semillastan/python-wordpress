@@ -17,9 +17,18 @@
 get_header(); ?>
 	<div class="row-fluid">
 		<div class="span9 content-container">
-			<?php the_post(); ?>
-				
-			<div class="item" id="post-<?php the_ID(); ?>">
+		<?php
+					$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+					$args = array(
+						'category_name' => 'python', 
+						'paged' => $paged,
+						'order' => 'ASC',
+					);
+
+					$list_of_posts = new WP_Query( $args );
+					$i = 0;
+					while ( $list_of_posts->have_posts() ): $list_of_posts->the_post(); ?>
+						<div class="item" id="post-<?php the_ID(); ?>">
 				<h4 class="headline"><?php the_title(); ?></h4>
 				<p>
 					<?php if(has_post_thumbnail()){ ?>
@@ -30,6 +39,7 @@ get_header(); ?>
 				</p>
 			</div>
 			<hr />
+					<?php endwhile; ?>
 		</div>
   		<div class="span3">
   			<?php get_sidebar(); ?>
